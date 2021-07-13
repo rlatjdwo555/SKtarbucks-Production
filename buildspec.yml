@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    _PROJECT_NAME: "productionmanage"
+    _PROJECT_NAME: "productionmanage" 
     _ECR_NAME: "user04" 
     _NAMESPACE: "skcc04-ns"
     _AWS_REGION: "ap-northeast-1" 
@@ -99,3 +99,4 @@ phases:
 cache:
   paths:
     - '/root/.m2/**/*'
+
