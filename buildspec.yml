@@ -3,9 +3,9 @@ version: 0.2
 env:
   variables:
     _PROJECT_NAME: "productionmanage"
-    _ECR_NAME: "user07" 
+    _ECR_NAME: "user07"
     _NAMESPACE: "skcc-ns" 
-    _AWS_REGION: "ap-northeast-1"
+    _AWS_REGION: "ap-northeast-1" 
 
 phases:
   install:
@@ -26,7 +26,7 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - mvn package -Dmaven.test.skip=true
-      - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$_AWS_REGION.amazonaws.com/$_ECR_NAME-$_PROJECT_NAME:latest  .
+      - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$_AWS_REGION.amazonaws.com/$_ECR_NAME-$_PROJECT_NAME:latest .
   post_build:
     commands:
       - echo Pushing the Docker image...
@@ -63,7 +63,7 @@ phases:
           namespace: $_NAMESPACE
         data:
           api.order.url: http://OrderManage:8080
-        EOF        
+        EOF
       - |
         cat  <<EOF | kubectl apply -f -
         apiVersion: apps/v1
@@ -104,15 +104,14 @@ phases:
                     initialDelaySeconds: 120
                     timeoutSeconds: 2
                     periodSeconds: 5
-                    failureThreshold: 5
+                    failureThreshold: 5  
                   env:
                     - name: api.order.url
                       valueFrom:
                         configMapKeyRef:
                           name: my-config2
-                          key: api.order.url        
+                          key: api.order.url      
         EOF
 cache:
   paths:
     - '/root/.m2/**/*'
-
