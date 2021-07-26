@@ -62,7 +62,7 @@ phases:
           name: my-config2
           namespace: $_NAMESPACE
         data:
-          api.cafe.url: http://OrderManage:8080
+          api.order.url: http://OrderManage:8080
         EOF        
       - |
         cat  <<EOF | kubectl apply -f -
