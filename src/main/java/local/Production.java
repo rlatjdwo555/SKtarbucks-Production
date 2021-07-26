@@ -12,25 +12,45 @@ public class Production {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private Long orderId;
-    private String cafeId;
+    private int count;
     private String cafeNm;
     private String custNm;
     private String status;
 
     @PostPersist
     public void onPostPersist(){
-        ProductionCompleted productionCompleted = new ProductionCompleted();
-        BeanUtils.copyProperties(this, productionCompleted);
-        productionCompleted.publishAfterCommit();
-    }
-
-    @PostUpdate
-    public void onPostUpdate(){
         ProductionChanged productionChanged = new ProductionChanged();
         BeanUtils.copyProperties(this, productionChanged);
         productionChanged.publishAfterCommit();
     }
 
+    @PostUpdate
+    public void onPostUpdate(){
+        if("COMPLETED".equals(status)){
+
+           // 주문 타입 확인을 동기식으로 호출
+           local.external.Order order = new local.external.Order();
+           order = ProductionManageApplication.applicationContext.getBean(local.external.OrderService.class)
+           .getOrderType(orderId);
+           
+           switch (order.getOrderType()) {
+               case "TAKEOUT":
+                ProductionChanged productionChanged = new ProductionChanged();
+                BeanUtils.copyProperties(this, productionChanged);
+                productionChanged.publishAfterCommit();                            
+                break;
+
+               case "DELIVERY":
+                ProductionSent productionSent = new ProductionSent();
+                BeanUtils.copyProperties(this, productionSent);
+                productionSent.publishAfterCommit();    
+                break;
+           
+               default :
+               
+           }
+        }
+    }
 
     public Long getId() {
         return id;
@@ -46,13 +66,7 @@ public class Production {
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
-    public String getCafeId() {
-        return cafeId;
-    }
 
-    public void setCafeId(String cafeId) {
-        this.cafeId = cafeId;
-    }
     public String getCafeNm() {
         return cafeNm;
     }
@@ -75,7 +89,12 @@ public class Production {
         this.status = status;
     }
 
+    public int getCount() {
+        return count;
+    }
 
-
+    public void setCount(int count) {
+        this.count = count;
+    }
 
 }

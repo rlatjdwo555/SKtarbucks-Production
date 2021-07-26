@@ -1,13 +1,13 @@
-package local;
+package local.external;
 
-public class Requested extends AbstractEvent {
+public class Order {
 
     private Long id;
-    private String cafeId;
-    private String chkDate;
+    private Long cafeId;
     private String custNm;
     private String status;
     private String cafeNm;
+    private String orderType;
 
     public Long getId() {
         return id;
@@ -16,20 +16,14 @@ public class Requested extends AbstractEvent {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getCafeId() {
+    public Long getCafeId() {
         return cafeId;
     }
 
-    public void setCafeId(String cafeId) {
+    public void setCafeId(Long cafeId) {
         this.cafeId = cafeId;
     }
-    public String getChkDate() {
-        return chkDate;
-    }
 
-    public void setChkDate(String chkDate) {
-        this.chkDate = chkDate;
-    }
     public String getCustNm() {
         return custNm;
     }
@@ -51,4 +45,13 @@ public class Requested extends AbstractEvent {
     public void setCafeNm(String cafeNm) {
         this.cafeNm = cafeNm;
     }
+
+    public void setOrderType(String orderType){
+        this.orderType = orderType;
+    }
+
+    public String getOrderType(){
+        return orderType;
+    }
+
 }

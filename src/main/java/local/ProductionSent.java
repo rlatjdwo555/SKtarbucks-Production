@@ -1,13 +1,14 @@
+
 package local;
 
-public class ForceCanceled extends AbstractEvent {
+public class ProductionSent extends AbstractEvent {
 
     private Long id;
-    private String cafeId;
-    private String chkDate;
+    private Long orderId;
+    private int count;
+    private String cafeNm;
     private String custNm;
     private String status;
-    private String cafeNm;
 
     public Long getId() {
         return id;
@@ -16,19 +17,20 @@ public class ForceCanceled extends AbstractEvent {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getCafeId() {
-        return cafeId;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setCafeId(String cafeId) {
-        this.cafeId = cafeId;
-    }
-    public String getChkDate() {
-        return chkDate;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
-    public void setChkDate(String chkDate) {
-        this.chkDate = chkDate;
+    public String getCafeNm() {
+        return cafeNm;
+    }
+
+    public void setCafeNm(String cafeNm) {
+        this.cafeNm = cafeNm;
     }
     public String getCustNm() {
         return custNm;
@@ -44,11 +46,12 @@ public class ForceCanceled extends AbstractEvent {
     public void setStatus(String status) {
         this.status = status;
     }
-    public String getCafeNm() {
-        return cafeNm;
+
+    public int getCount() {
+        return count;
     }
 
-    public void setCafeNm(String cafeNm) {
-        this.cafeNm = cafeNm;
+    public void setCount(int count) {
+        this.count = count;
     }
 }

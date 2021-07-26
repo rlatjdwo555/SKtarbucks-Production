@@ -22,37 +22,22 @@ public class PolicyHandler{
     }
 
     @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverOrderRequested_ProductionComplete(@Payload Requested requested){
+    public void wheneverPaymentApproved_ProductionComplete(@Payload PaymentApproved paymentApproved){
 
-        if(requested.isMe()){
-            //  주문 요청으로 인한 제조 확정
-            System.out.println("##### 주문 요청으로 인한 제조 확정: " + requested.toJson());
-            if(requested.isMe()){
-                Production temp = new Production();
-                temp.setStatus("REQUEST_COMPLETED");
-                temp.setCustNm(requested.getCustNm());
-                temp.setCafeId(requested.getCafeId());
-                temp.setCafeNm(requested.getCafeNm());
-                temp.setOrderId(requested.getId());
-                productionRepository.save(temp);
-            }
-        }
+        if(!paymentApproved.isMe()) return;
+        
+        // 결제 승인으로 인한 제조 확정
+        System.out.println("##### listener PaymentApproved: " + paymentApproved.toJson());
+            
+        Production production = new Production();
+        production.setOrderId(paymentApproved.getOrderId());
+        production.setCustNm(paymentApproved.getCustNm());
+        production.setCafeNm(paymentApproved.getCafeNm());
+        production.setCount(paymentApproved.getCount());
+        production.setStatus("MAKING");
+        productionRepository.save(production);
     }
-    @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverCafeDeleted_ForcedProductionCancel(@Payload CafeDeleted cafeDeleted){
 
-        if(cafeDeleted.isMe()){
-            System.out.println("##### listener ForcedProductionCanceled : " + cafeDeleted.toJson());
-            //  카페 종료로 인해 제조 상태 변경
-            List<Production> list = productionRepository.findByCafeId(String.valueOf(cafeDeleted.getId()));
-            for(Production temp : list){
-                if(!"CANCELED".equals(temp.getStatus())) {
-                    temp.setStatus("FORCE_CANCELED");
-                    productionRepository.save(temp);
-                }
-            }
-        }
-    }
     @StreamListener(KafkaProcessor.INPUT)
     public void wheneverCanceled_ProductionCancel(@Payload Canceled canceled){
 

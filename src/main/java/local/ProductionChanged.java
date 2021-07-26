@@ -5,7 +5,7 @@ public class ProductionChanged extends AbstractEvent {
 
     private Long id;
     private Long orderId;
-    private String cafeId;
+    private int count;
     private String cafeNm;
     private String custNm;
     private String status;
@@ -24,13 +24,7 @@ public class ProductionChanged extends AbstractEvent {
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
-    public String getCafeId() {
-        return cafeId;
-    }
 
-    public void setCafeId(String cafeId) {
-        this.cafeId = cafeId;
-    }
     public String getCafeNm() {
         return cafeNm;
     }
@@ -52,4 +46,13 @@ public class ProductionChanged extends AbstractEvent {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+    
 }
